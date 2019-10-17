@@ -18,6 +18,19 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\d3dclass.cpp" />
+    <ClCompile Include="Src\graphicsclass.cpp" />
+    <ClCompile Include="Src\inputclass.cpp" />
+    <ClCompile Include="Src\main.cpp" />
+    <ClCompile Include="Src\systemclass.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Src\d3dclass.h" />
+    <ClInclude Include="Src\graphicsclass.h" />
+    <ClInclude Include="Src\inputclass.h" />
+    <ClInclude Include="Src\systemclass.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{AFCF461A-9FF5-45A8-9C09-BCEB5734EAE1}</ProjectGuid>
@@ -72,8 +85,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\mySource\DXProjects\DX11_Framework\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\mySource\DXProjects\DX11_Framework\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -141,21 +154,6 @@
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="d3dclass.cpp" />
-    <ClCompile Include="graphicsclass.cpp" />
-    <ClCompile Include="inputclass.cpp" />
-    <ClCompile Include="main.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="systemclass.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="d3dclass.h" />
-    <ClInclude Include="graphicsclass.h" />
-    <ClInclude Include="inputclass.h" />
-    <ClInclude Include="systemclass.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
