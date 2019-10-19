@@ -51,6 +51,8 @@ void GraphicsClass::Shutdown()
 		m_D3D = 0;
 
 	}
+
+	
 	return;
 }
 

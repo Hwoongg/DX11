@@ -4,7 +4,8 @@
 #include "inputclass.h"
 #include "graphicsclass.h"
 #include "systemclass.h"
-
+#include <string>
+#include <iostream>
 
 SystemClass::SystemClass()
 {
@@ -185,7 +186,7 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	WNDCLASSEX wc;
 	DEVMODE dmScreenSettings;
 	int posX, posY;
-
+	
 
 	// Get an external pointer to this object.	
 	ApplicationHandle = this;
@@ -194,9 +195,9 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	m_hinstance = GetModuleHandle(NULL);
 
 	// Give the application a name.
-	m_applicationName = L"Engine";
+	m_applicationName = L"DX11_Framework";
 
-	// Setup the windows class with default settings.
+	// 윈도우 클래스 세팅
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
 	wc.lpfnWndProc = WndProc;
 	wc.cbClsExtra = 0;
@@ -245,11 +246,27 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 		posY = (GetSystemMetrics(SM_CYSCREEN) - screenHeight) / 2;
 	}
 
+
+	// Read Registry... 파일 시스템으로 교체해야할 듯.
+	/*wchar_t buf[256];
+	wsprintfW(buf, L"%d", posX);
+	GetProfileStringW(m_applicationName, L"PosX", L"0", buf, 256);
+	posX = _wtoi(buf);
+
+	wsprintfW(buf, L"%d", posY);
+	GetProfileStringW(m_applicationName, L"PosY", L"0", buf, 256);
+	posY = _wtoi(buf);*/
+	
+	/*posX = GetProfileInt(L"ScreenInfo", L"PosX", posX);
+	posY = GetProfileInt(L"ScreenInfo", L"PosY", posY);*/
+
+
 	// Create the window with the screen settings and get the handle to it.
 	m_hwnd = CreateWindowEx(WS_EX_APPWINDOW, m_applicationName, m_applicationName,
 		WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP | WS_CAPTION | WS_SYSMENU
 		| WS_MINIMIZEBOX,
 		posX, posY, screenWidth, screenHeight, NULL, NULL, m_hinstance, NULL);
+
 
 	// Bring the window up on the screen and set it as main focus.
 	ShowWindow(m_hwnd, SW_SHOW);
@@ -257,7 +274,7 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	SetFocus(m_hwnd);
 
 	// Hide the mouse cursor.
-	ShowCursor(false);
+	ShowCursor(true);
 
 	return;
 }
@@ -265,6 +282,19 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 
 void SystemClass::ShutdownWindows()
 {
+	// Save My Registry
+	/*RECT r;
+	GetWindowRect(m_hwnd, &r);
+
+	wchar_t buf[256];
+	wsprintfW(buf, L"%d", r.left);
+	WriteProfileStringW(m_applicationName, L"PosX", buf);
+	wsprintfW(buf, L"%d", r.top);
+	WriteProfileStringW(m_applicationName, L"PosY", buf);*/
+
+	
+
+	
 	// Show the mouse cursor.
 	ShowCursor(true);
 

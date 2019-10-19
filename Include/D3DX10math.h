@@ -342,14 +342,14 @@ public:
 //
 //===========================================================================
 #ifdef __cplusplus
-typedef struct D3DXMATRIX : public D3DMATRIX
+typedef struct MATRIX : public D3DMATRIX
 {
 public:
-    D3DXMATRIX() {};
-    D3DXMATRIX( CONST FLOAT * );
-    D3DXMATRIX( CONST D3DMATRIX& );
-    D3DXMATRIX( CONST D3DXFLOAT16 * );
-    D3DXMATRIX( FLOAT _11, FLOAT _12, FLOAT _13, FLOAT _14,
+    MATRIX() {};
+    MATRIX( CONST FLOAT * );
+    MATRIX( CONST D3DMATRIX& );
+    MATRIX( CONST D3DXFLOAT16 * );
+    MATRIX( FLOAT _11, FLOAT _12, FLOAT _13, FLOAT _14,
                 FLOAT _21, FLOAT _22, FLOAT _23, FLOAT _24,
                 FLOAT _31, FLOAT _32, FLOAT _33, FLOAT _34,
                 FLOAT _41, FLOAT _42, FLOAT _43, FLOAT _44 );
@@ -364,27 +364,27 @@ public:
     operator CONST FLOAT* () const;
 
     // assignment operators
-    D3DXMATRIX& operator *= ( CONST D3DXMATRIX& );
-    D3DXMATRIX& operator += ( CONST D3DXMATRIX& );
-    D3DXMATRIX& operator -= ( CONST D3DXMATRIX& );
-    D3DXMATRIX& operator *= ( FLOAT );
-    D3DXMATRIX& operator /= ( FLOAT );
+    MATRIX& operator *= ( CONST MATRIX& );
+    MATRIX& operator += ( CONST MATRIX& );
+    MATRIX& operator -= ( CONST MATRIX& );
+    MATRIX& operator *= ( FLOAT );
+    MATRIX& operator /= ( FLOAT );
 
     // unary operators
-    D3DXMATRIX operator + () const;
-    D3DXMATRIX operator - () const;
+    MATRIX operator + () const;
+    MATRIX operator - () const;
 
     // binary operators
-    D3DXMATRIX operator * ( CONST D3DXMATRIX& ) const;
-    D3DXMATRIX operator + ( CONST D3DXMATRIX& ) const;
-    D3DXMATRIX operator - ( CONST D3DXMATRIX& ) const;
-    D3DXMATRIX operator * ( FLOAT ) const;
-    D3DXMATRIX operator / ( FLOAT ) const;
+    MATRIX operator * ( CONST MATRIX& ) const;
+    MATRIX operator + ( CONST MATRIX& ) const;
+    MATRIX operator - ( CONST MATRIX& ) const;
+    MATRIX operator * ( FLOAT ) const;
+    MATRIX operator / ( FLOAT ) const;
 
-    friend D3DXMATRIX operator * ( FLOAT, CONST D3DXMATRIX& );
+    friend MATRIX operator * ( FLOAT, CONST MATRIX& );
 
-    BOOL operator == ( CONST D3DXMATRIX& ) const;
-    BOOL operator != ( CONST D3DXMATRIX& ) const;
+    BOOL operator == ( CONST MATRIX& ) const;
+    BOOL operator != ( CONST MATRIX& ) const;
 
 } D3DXMATRIX, *LPD3DXMATRIX;
 
@@ -410,7 +410,7 @@ typedef struct _D3DMATRIX D3DXMATRIX, *LPD3DXMATRIX;
 // that eventually start aligning the matrix.
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
-typedef struct _D3DXMATRIXA16 : public D3DXMATRIX
+typedef struct _D3DXMATRIXA16 : public MATRIX
 {
     _D3DXMATRIXA16() {};
     _D3DXMATRIXA16( CONST FLOAT * );
@@ -430,7 +430,7 @@ typedef struct _D3DXMATRIXA16 : public D3DXMATRIX
     void operator delete[] ( void* );   // cast to D3DXMATRIX and delete.
     
     // assignment operators
-    _D3DXMATRIXA16& operator = ( CONST D3DXMATRIX& );
+    _D3DXMATRIXA16& operator = ( CONST MATRIX& );
 
 } _D3DXMATRIXA16;
 
@@ -686,27 +686,27 @@ D3DXVECTOR2* WINAPI D3DXVec2BaryCentric
 
 // Transform (x, y, 0, 1) by matrix.
 D3DXVECTOR4* WINAPI D3DXVec2Transform
-    ( D3DXVECTOR4 *pOut, CONST D3DXVECTOR2 *pV, CONST D3DXMATRIX *pM );
+    ( D3DXVECTOR4 *pOut, CONST D3DXVECTOR2 *pV, CONST MATRIX *pM );
 
 // Transform (x, y, 0, 1) by matrix, project result back into w=1.
 D3DXVECTOR2* WINAPI D3DXVec2TransformCoord
-    ( D3DXVECTOR2 *pOut, CONST D3DXVECTOR2 *pV, CONST D3DXMATRIX *pM );
+    ( D3DXVECTOR2 *pOut, CONST D3DXVECTOR2 *pV, CONST MATRIX *pM );
 
 // Transform (x, y, 0, 0) by matrix.
 D3DXVECTOR2* WINAPI D3DXVec2TransformNormal
-    ( D3DXVECTOR2 *pOut, CONST D3DXVECTOR2 *pV, CONST D3DXMATRIX *pM );
+    ( D3DXVECTOR2 *pOut, CONST D3DXVECTOR2 *pV, CONST MATRIX *pM );
      
 // Transform Array (x, y, 0, 1) by matrix.
 D3DXVECTOR4* WINAPI D3DXVec2TransformArray
-    ( D3DXVECTOR4 *pOut, UINT OutStride, CONST D3DXVECTOR2 *pV, UINT VStride, CONST D3DXMATRIX *pM, UINT n);
+    ( D3DXVECTOR4 *pOut, UINT OutStride, CONST D3DXVECTOR2 *pV, UINT VStride, CONST MATRIX *pM, UINT n);
 
 // Transform Array (x, y, 0, 1) by matrix, project result back into w=1.
 D3DXVECTOR2* WINAPI D3DXVec2TransformCoordArray
-    ( D3DXVECTOR2 *pOut, UINT OutStride, CONST D3DXVECTOR2 *pV, UINT VStride, CONST D3DXMATRIX *pM, UINT n );
+    ( D3DXVECTOR2 *pOut, UINT OutStride, CONST D3DXVECTOR2 *pV, UINT VStride, CONST MATRIX *pM, UINT n );
 
 // Transform Array (x, y, 0, 0) by matrix.
 D3DXVECTOR2* WINAPI D3DXVec2TransformNormalArray
-    ( D3DXVECTOR2 *pOut, UINT OutStride, CONST D3DXVECTOR2 *pV, UINT VStride, CONST D3DXMATRIX *pM, UINT n );
+    ( D3DXVECTOR2 *pOut, UINT OutStride, CONST D3DXVECTOR2 *pV, UINT VStride, CONST MATRIX *pM, UINT n );
     
     
 
@@ -781,52 +781,52 @@ D3DXVECTOR3* WINAPI D3DXVec3BaryCentric
 
 // Transform (x, y, z, 1) by matrix.
 D3DXVECTOR4* WINAPI D3DXVec3Transform
-    ( D3DXVECTOR4 *pOut, CONST D3DXVECTOR3 *pV, CONST D3DXMATRIX *pM );
+    ( D3DXVECTOR4 *pOut, CONST D3DXVECTOR3 *pV, CONST MATRIX *pM );
 
 // Transform (x, y, z, 1) by matrix, project result back into w=1.
 D3DXVECTOR3* WINAPI D3DXVec3TransformCoord
-    ( D3DXVECTOR3 *pOut, CONST D3DXVECTOR3 *pV, CONST D3DXMATRIX *pM );
+    ( D3DXVECTOR3 *pOut, CONST D3DXVECTOR3 *pV, CONST MATRIX *pM );
 
 // Transform (x, y, z, 0) by matrix.  If you transforming a normal by a 
 // non-affine matrix, the matrix you pass to this function should be the 
 // transpose of the inverse of the matrix you would use to transform a coord.
 D3DXVECTOR3* WINAPI D3DXVec3TransformNormal
-    ( D3DXVECTOR3 *pOut, CONST D3DXVECTOR3 *pV, CONST D3DXMATRIX *pM );
+    ( D3DXVECTOR3 *pOut, CONST D3DXVECTOR3 *pV, CONST MATRIX *pM );
     
     
 // Transform Array (x, y, z, 1) by matrix. 
 D3DXVECTOR4* WINAPI D3DXVec3TransformArray
-    ( D3DXVECTOR4 *pOut, UINT OutStride, CONST D3DXVECTOR3 *pV, UINT VStride, CONST D3DXMATRIX *pM, UINT n );
+    ( D3DXVECTOR4 *pOut, UINT OutStride, CONST D3DXVECTOR3 *pV, UINT VStride, CONST MATRIX *pM, UINT n );
 
 // Transform Array (x, y, z, 1) by matrix, project result back into w=1.
 D3DXVECTOR3* WINAPI D3DXVec3TransformCoordArray
-    ( D3DXVECTOR3 *pOut, UINT OutStride, CONST D3DXVECTOR3 *pV, UINT VStride, CONST D3DXMATRIX *pM, UINT n );
+    ( D3DXVECTOR3 *pOut, UINT OutStride, CONST D3DXVECTOR3 *pV, UINT VStride, CONST MATRIX *pM, UINT n );
 
 // Transform (x, y, z, 0) by matrix.  If you transforming a normal by a 
 // non-affine matrix, the matrix you pass to this function should be the 
 // transpose of the inverse of the matrix you would use to transform a coord.
 D3DXVECTOR3* WINAPI D3DXVec3TransformNormalArray
-    ( D3DXVECTOR3 *pOut, UINT OutStride, CONST D3DXVECTOR3 *pV, UINT VStride, CONST D3DXMATRIX *pM, UINT n );
+    ( D3DXVECTOR3 *pOut, UINT OutStride, CONST D3DXVECTOR3 *pV, UINT VStride, CONST MATRIX *pM, UINT n );
 
 // Project vector from object space into screen space
 D3DXVECTOR3* WINAPI D3DXVec3Project
     ( D3DXVECTOR3 *pOut, CONST D3DXVECTOR3 *pV, CONST D3D10_VIEWPORT *pViewport,
-      CONST D3DXMATRIX *pProjection, CONST D3DXMATRIX *pView, CONST D3DXMATRIX *pWorld);
+      CONST MATRIX *pProjection, CONST MATRIX *pView, CONST MATRIX *pWorld);
 
 // Project vector from screen space into object space
 D3DXVECTOR3* WINAPI D3DXVec3Unproject
     ( D3DXVECTOR3 *pOut, CONST D3DXVECTOR3 *pV, CONST D3D10_VIEWPORT *pViewport,
-      CONST D3DXMATRIX *pProjection, CONST D3DXMATRIX *pView, CONST D3DXMATRIX *pWorld);
+      CONST MATRIX *pProjection, CONST MATRIX *pView, CONST MATRIX *pWorld);
       
 // Project vector Array from object space into screen space
 D3DXVECTOR3* WINAPI D3DXVec3ProjectArray
     ( D3DXVECTOR3 *pOut, UINT OutStride,CONST D3DXVECTOR3 *pV, UINT VStride,CONST D3D10_VIEWPORT *pViewport,
-      CONST D3DXMATRIX *pProjection, CONST D3DXMATRIX *pView, CONST D3DXMATRIX *pWorld, UINT n);
+      CONST MATRIX *pProjection, CONST MATRIX *pView, CONST MATRIX *pWorld, UINT n);
 
 // Project vector Array from screen space into object space
 D3DXVECTOR3* WINAPI D3DXVec3UnprojectArray
     ( D3DXVECTOR3 *pOut, UINT OutStride, CONST D3DXVECTOR3 *pV, UINT VStride, CONST D3D10_VIEWPORT *pViewport,
-      CONST D3DXMATRIX *pProjection, CONST D3DXMATRIX *pView, CONST D3DXMATRIX *pWorld, UINT n);
+      CONST MATRIX *pProjection, CONST MATRIX *pView, CONST MATRIX *pWorld, UINT n);
 
 
 #ifdef __cplusplus
@@ -903,11 +903,11 @@ D3DXVECTOR4* WINAPI D3DXVec4BaryCentric
 
 // Transform vector by matrix.
 D3DXVECTOR4* WINAPI D3DXVec4Transform
-    ( D3DXVECTOR4 *pOut, CONST D3DXVECTOR4 *pV, CONST D3DXMATRIX *pM );
+    ( D3DXVECTOR4 *pOut, CONST D3DXVECTOR4 *pV, CONST MATRIX *pM );
     
 // Transform vector array by matrix.
 D3DXVECTOR4* WINAPI D3DXVec4TransformArray
-    ( D3DXVECTOR4 *pOut, UINT OutStride, CONST D3DXVECTOR4 *pV, UINT VStride, CONST D3DXMATRIX *pM, UINT n );
+    ( D3DXVECTOR4 *pOut, UINT OutStride, CONST D3DXVECTOR4 *pV, UINT VStride, CONST MATRIX *pM, UINT n );
 
 #ifdef __cplusplus
 }
@@ -920,11 +920,11 @@ D3DXVECTOR4* WINAPI D3DXVec4TransformArray
 
 // inline
 
-D3DXMATRIX* D3DXMatrixIdentity
-    ( D3DXMATRIX *pOut );
+MATRIX* D3DXMatrixIdentity
+    ( MATRIX *pOut );
 
 BOOL D3DXMatrixIsIdentity
-    ( CONST D3DXMATRIX *pM );
+    ( CONST MATRIX *pM );
 
 
 // non-inline
@@ -933,154 +933,154 @@ extern "C" {
 #endif
 
 FLOAT WINAPI D3DXMatrixDeterminant
-    ( CONST D3DXMATRIX *pM );
+    ( CONST MATRIX *pM );
 
 HRESULT WINAPI D3DXMatrixDecompose
     ( D3DXVECTOR3 *pOutScale, D3DXQUATERNION *pOutRotation, 
-	  D3DXVECTOR3 *pOutTranslation, CONST D3DXMATRIX *pM );
+	  D3DXVECTOR3 *pOutTranslation, CONST MATRIX *pM );
 
-D3DXMATRIX* WINAPI D3DXMatrixTranspose
-    ( D3DXMATRIX *pOut, CONST D3DXMATRIX *pM );
+MATRIX* WINAPI D3DXMatrixTranspose
+    ( MATRIX *pOut, CONST MATRIX *pM );
 
 // Matrix multiplication.  The result represents the transformation M2
 // followed by the transformation M1.  (Out = M1 * M2)
-D3DXMATRIX* WINAPI D3DXMatrixMultiply
-    ( D3DXMATRIX *pOut, CONST D3DXMATRIX *pM1, CONST D3DXMATRIX *pM2 );
+MATRIX* WINAPI D3DXMatrixMultiply
+    ( MATRIX *pOut, CONST MATRIX *pM1, CONST MATRIX *pM2 );
 
 // Matrix multiplication, followed by a transpose. (Out = T(M1 * M2))
-D3DXMATRIX* WINAPI D3DXMatrixMultiplyTranspose
-    ( D3DXMATRIX *pOut, CONST D3DXMATRIX *pM1, CONST D3DXMATRIX *pM2 );
+MATRIX* WINAPI D3DXMatrixMultiplyTranspose
+    ( MATRIX *pOut, CONST MATRIX *pM1, CONST MATRIX *pM2 );
 
 // Calculate inverse of matrix.  Inversion my fail, in which case NULL will
 // be returned.  The determinant of pM is also returned it pfDeterminant
 // is non-NULL.
-D3DXMATRIX* WINAPI D3DXMatrixInverse
-    ( D3DXMATRIX *pOut, FLOAT *pDeterminant, CONST D3DXMATRIX *pM );
+MATRIX* WINAPI D3DXMatrixInverse
+    ( MATRIX *pOut, FLOAT *pDeterminant, CONST MATRIX *pM );
 
 // Build a matrix which scales by (sx, sy, sz)
-D3DXMATRIX* WINAPI D3DXMatrixScaling
-    ( D3DXMATRIX *pOut, FLOAT sx, FLOAT sy, FLOAT sz );
+MATRIX* WINAPI D3DXMatrixScaling
+    ( MATRIX *pOut, FLOAT sx, FLOAT sy, FLOAT sz );
 
 // Build a matrix which translates by (x, y, z)
-D3DXMATRIX* WINAPI D3DXMatrixTranslation
-    ( D3DXMATRIX *pOut, FLOAT x, FLOAT y, FLOAT z );
+MATRIX* WINAPI D3DXMatrixTranslation
+    ( MATRIX *pOut, FLOAT x, FLOAT y, FLOAT z );
 
 // Build a matrix which rotates around the X axis
-D3DXMATRIX* WINAPI D3DXMatrixRotationX
-    ( D3DXMATRIX *pOut, FLOAT Angle );
+MATRIX* WINAPI D3DXMatrixRotationX
+    ( MATRIX *pOut, FLOAT Angle );
 
 // Build a matrix which rotates around the Y axis
-D3DXMATRIX* WINAPI D3DXMatrixRotationY
-    ( D3DXMATRIX *pOut, FLOAT Angle );
+MATRIX* WINAPI D3DXMatrixRotationY
+    ( MATRIX *pOut, FLOAT Angle );
 
 // Build a matrix which rotates around the Z axis
-D3DXMATRIX* WINAPI D3DXMatrixRotationZ
-    ( D3DXMATRIX *pOut, FLOAT Angle );
+MATRIX* WINAPI D3DXMatrixRotationZ
+    ( MATRIX *pOut, FLOAT Angle );
 
 // Build a matrix which rotates around an arbitrary axis
-D3DXMATRIX* WINAPI D3DXMatrixRotationAxis
-    ( D3DXMATRIX *pOut, CONST D3DXVECTOR3 *pV, FLOAT Angle );
+MATRIX* WINAPI D3DXMatrixRotationAxis
+    ( MATRIX *pOut, CONST D3DXVECTOR3 *pV, FLOAT Angle );
 
 // Build a matrix from a quaternion
-D3DXMATRIX* WINAPI D3DXMatrixRotationQuaternion
-    ( D3DXMATRIX *pOut, CONST D3DXQUATERNION *pQ);
+MATRIX* WINAPI D3DXMatrixRotationQuaternion
+    ( MATRIX *pOut, CONST D3DXQUATERNION *pQ);
 
 // Yaw around the Y axis, a pitch around the X axis,
 // and a roll around the Z axis.
-D3DXMATRIX* WINAPI D3DXMatrixRotationYawPitchRoll
-    ( D3DXMATRIX *pOut, FLOAT Yaw, FLOAT Pitch, FLOAT Roll );
+MATRIX* WINAPI D3DXMatrixRotationYawPitchRoll
+    ( MATRIX *pOut, FLOAT Yaw, FLOAT Pitch, FLOAT Roll );
 
 // Build transformation matrix.  NULL arguments are treated as identity.
 // Mout = Msc-1 * Msr-1 * Ms * Msr * Msc * Mrc-1 * Mr * Mrc * Mt
-D3DXMATRIX* WINAPI D3DXMatrixTransformation
-    ( D3DXMATRIX *pOut, CONST D3DXVECTOR3 *pScalingCenter,
+MATRIX* WINAPI D3DXMatrixTransformation
+    ( MATRIX *pOut, CONST D3DXVECTOR3 *pScalingCenter,
       CONST D3DXQUATERNION *pScalingRotation, CONST D3DXVECTOR3 *pScaling,
       CONST D3DXVECTOR3 *pRotationCenter, CONST D3DXQUATERNION *pRotation,
       CONST D3DXVECTOR3 *pTranslation);
 
 // Build 2D transformation matrix in XY plane.  NULL arguments are treated as identity.
 // Mout = Msc-1 * Msr-1 * Ms * Msr * Msc * Mrc-1 * Mr * Mrc * Mt
-D3DXMATRIX* WINAPI D3DXMatrixTransformation2D
-    ( D3DXMATRIX *pOut, CONST D3DXVECTOR2* pScalingCenter, 
+MATRIX* WINAPI D3DXMatrixTransformation2D
+    ( MATRIX *pOut, CONST D3DXVECTOR2* pScalingCenter, 
       FLOAT ScalingRotation, CONST D3DXVECTOR2* pScaling, 
       CONST D3DXVECTOR2* pRotationCenter, FLOAT Rotation, 
       CONST D3DXVECTOR2* pTranslation);
 
 // Build affine transformation matrix.  NULL arguments are treated as identity.
 // Mout = Ms * Mrc-1 * Mr * Mrc * Mt
-D3DXMATRIX* WINAPI D3DXMatrixAffineTransformation
-    ( D3DXMATRIX *pOut, FLOAT Scaling, CONST D3DXVECTOR3 *pRotationCenter,
+MATRIX* WINAPI D3DXMatrixAffineTransformation
+    ( MATRIX *pOut, FLOAT Scaling, CONST D3DXVECTOR3 *pRotationCenter,
       CONST D3DXQUATERNION *pRotation, CONST D3DXVECTOR3 *pTranslation);
 
 // Build 2D affine transformation matrix in XY plane.  NULL arguments are treated as identity.
 // Mout = Ms * Mrc-1 * Mr * Mrc * Mt
-D3DXMATRIX* WINAPI D3DXMatrixAffineTransformation2D
-    ( D3DXMATRIX *pOut, FLOAT Scaling, CONST D3DXVECTOR2* pRotationCenter, 
+MATRIX* WINAPI D3DXMatrixAffineTransformation2D
+    ( MATRIX *pOut, FLOAT Scaling, CONST D3DXVECTOR2* pRotationCenter, 
       FLOAT Rotation, CONST D3DXVECTOR2* pTranslation);
 
 // Build a lookat matrix. (right-handed)
-D3DXMATRIX* WINAPI D3DXMatrixLookAtRH
-    ( D3DXMATRIX *pOut, CONST D3DXVECTOR3 *pEye, CONST D3DXVECTOR3 *pAt,
+MATRIX* WINAPI D3DXMatrixLookAtRH
+    ( MATRIX *pOut, CONST D3DXVECTOR3 *pEye, CONST D3DXVECTOR3 *pAt,
       CONST D3DXVECTOR3 *pUp );
 
 // Build a lookat matrix. (left-handed)
-D3DXMATRIX* WINAPI D3DXMatrixLookAtLH
-    ( D3DXMATRIX *pOut, CONST D3DXVECTOR3 *pEye, CONST D3DXVECTOR3 *pAt,
+MATRIX* WINAPI D3DXMatrixLookAtLH
+    ( MATRIX *pOut, CONST D3DXVECTOR3 *pEye, CONST D3DXVECTOR3 *pAt,
       CONST D3DXVECTOR3 *pUp );
 
 // Build a perspective projection matrix. (right-handed)
-D3DXMATRIX* WINAPI D3DXMatrixPerspectiveRH
-    ( D3DXMATRIX *pOut, FLOAT w, FLOAT h, FLOAT zn, FLOAT zf );
+MATRIX* WINAPI D3DXMatrixPerspectiveRH
+    ( MATRIX *pOut, FLOAT w, FLOAT h, FLOAT zn, FLOAT zf );
 
 // Build a perspective projection matrix. (left-handed)
-D3DXMATRIX* WINAPI D3DXMatrixPerspectiveLH
-    ( D3DXMATRIX *pOut, FLOAT w, FLOAT h, FLOAT zn, FLOAT zf );
+MATRIX* WINAPI D3DXMatrixPerspectiveLH
+    ( MATRIX *pOut, FLOAT w, FLOAT h, FLOAT zn, FLOAT zf );
 
 // Build a perspective projection matrix. (right-handed)
-D3DXMATRIX* WINAPI D3DXMatrixPerspectiveFovRH
-    ( D3DXMATRIX *pOut, FLOAT fovy, FLOAT Aspect, FLOAT zn, FLOAT zf );
+MATRIX* WINAPI D3DXMatrixPerspectiveFovRH
+    ( MATRIX *pOut, FLOAT fovy, FLOAT Aspect, FLOAT zn, FLOAT zf );
 
 // Build a perspective projection matrix. (left-handed)
-D3DXMATRIX* WINAPI D3DXMatrixPerspectiveFovLH
-    ( D3DXMATRIX *pOut, FLOAT fovy, FLOAT Aspect, FLOAT zn, FLOAT zf );
+MATRIX* WINAPI D3DXMatrixPerspectiveFovLH
+    ( MATRIX *pOut, FLOAT fovy, FLOAT Aspect, FLOAT zn, FLOAT zf );
 
 // Build a perspective projection matrix. (right-handed)
-D3DXMATRIX* WINAPI D3DXMatrixPerspectiveOffCenterRH
-    ( D3DXMATRIX *pOut, FLOAT l, FLOAT r, FLOAT b, FLOAT t, FLOAT zn,
+MATRIX* WINAPI D3DXMatrixPerspectiveOffCenterRH
+    ( MATRIX *pOut, FLOAT l, FLOAT r, FLOAT b, FLOAT t, FLOAT zn,
       FLOAT zf );
 
 // Build a perspective projection matrix. (left-handed)
-D3DXMATRIX* WINAPI D3DXMatrixPerspectiveOffCenterLH
-    ( D3DXMATRIX *pOut, FLOAT l, FLOAT r, FLOAT b, FLOAT t, FLOAT zn,
+MATRIX* WINAPI D3DXMatrixPerspectiveOffCenterLH
+    ( MATRIX *pOut, FLOAT l, FLOAT r, FLOAT b, FLOAT t, FLOAT zn,
       FLOAT zf );
 
 // Build an ortho projection matrix. (right-handed)
-D3DXMATRIX* WINAPI D3DXMatrixOrthoRH
-    ( D3DXMATRIX *pOut, FLOAT w, FLOAT h, FLOAT zn, FLOAT zf );
+MATRIX* WINAPI D3DXMatrixOrthoRH
+    ( MATRIX *pOut, FLOAT w, FLOAT h, FLOAT zn, FLOAT zf );
 
 // Build an ortho projection matrix. (left-handed)
-D3DXMATRIX* WINAPI D3DXMatrixOrthoLH
-    ( D3DXMATRIX *pOut, FLOAT w, FLOAT h, FLOAT zn, FLOAT zf );
+MATRIX* WINAPI D3DXMatrixOrthoLH
+    ( MATRIX *pOut, FLOAT w, FLOAT h, FLOAT zn, FLOAT zf );
 
 // Build an ortho projection matrix. (right-handed)
-D3DXMATRIX* WINAPI D3DXMatrixOrthoOffCenterRH
-    ( D3DXMATRIX *pOut, FLOAT l, FLOAT r, FLOAT b, FLOAT t, FLOAT zn,
+MATRIX* WINAPI D3DXMatrixOrthoOffCenterRH
+    ( MATRIX *pOut, FLOAT l, FLOAT r, FLOAT b, FLOAT t, FLOAT zn,
       FLOAT zf );
 
 // Build an ortho projection matrix. (left-handed)
-D3DXMATRIX* WINAPI D3DXMatrixOrthoOffCenterLH
-    ( D3DXMATRIX *pOut, FLOAT l, FLOAT r, FLOAT b, FLOAT t, FLOAT zn,
+MATRIX* WINAPI D3DXMatrixOrthoOffCenterLH
+    ( MATRIX *pOut, FLOAT l, FLOAT r, FLOAT b, FLOAT t, FLOAT zn,
       FLOAT zf );
 
 // Build a matrix which flattens geometry into a plane, as if casting
 // a shadow from a light.
-D3DXMATRIX* WINAPI D3DXMatrixShadow
-    ( D3DXMATRIX *pOut, CONST D3DXVECTOR4 *pLight,
+MATRIX* WINAPI D3DXMatrixShadow
+    ( MATRIX *pOut, CONST D3DXVECTOR4 *pLight,
       CONST D3DXPLANE *pPlane );
 
 // Build a matrix which reflects the coordinate system about a plane
-D3DXMATRIX* WINAPI D3DXMatrixReflect
-    ( D3DXMATRIX *pOut, CONST D3DXPLANE *pPlane );
+MATRIX* WINAPI D3DXMatrixReflect
+    ( MATRIX *pOut, CONST D3DXPLANE *pPlane );
 
 #ifdef __cplusplus
 }
@@ -1126,7 +1126,7 @@ void WINAPI D3DXQuaternionToAxisAngle
 
 // Build a quaternion from a rotation matrix.
 D3DXQUATERNION* WINAPI D3DXQuaternionRotationMatrix
-    ( D3DXQUATERNION *pOut, CONST D3DXMATRIX *pM);
+    ( D3DXQUATERNION *pOut, CONST MATRIX *pM);
 
 // Rotation about arbitrary axis.
 D3DXQUATERNION* WINAPI D3DXQuaternionRotationAxis
@@ -1241,12 +1241,12 @@ D3DXPLANE* WINAPI D3DXPlaneFromPoints
 // Transform a plane by a matrix.  The vector (a,b,c) must be normal.
 // M should be the inverse transpose of the transformation desired.
 D3DXPLANE* WINAPI D3DXPlaneTransform
-    ( D3DXPLANE *pOut, CONST D3DXPLANE *pP, CONST D3DXMATRIX *pM );
+    ( D3DXPLANE *pOut, CONST D3DXPLANE *pP, CONST MATRIX *pM );
     
 // Transform an array of planes by a matrix.  The vectors (a,b,c) must be normal.
 // M should be the inverse transpose of the transformation desired.
 D3DXPLANE* WINAPI D3DXPlaneTransformArray
-    ( D3DXPLANE *pOut, UINT OutStride, CONST D3DXPLANE *pP, UINT PStride, CONST D3DXMATRIX *pM, UINT n );
+    ( D3DXPLANE *pOut, UINT OutStride, CONST D3DXPLANE *pP, UINT PStride, CONST MATRIX *pM, UINT n );
 
 #ifdef __cplusplus
 }
@@ -1361,15 +1361,15 @@ DECLARE_INTERFACE_(ID3DXMatrixStack, IUnknown)
     STDMETHOD(LoadIdentity)(THIS) PURE;
 
     // Loads the given matrix into the current matrix
-    STDMETHOD(LoadMatrix)(THIS_ CONST D3DXMATRIX* pM ) PURE;
+    STDMETHOD(LoadMatrix)(THIS_ CONST MATRIX* pM ) PURE;
 
     // Right-Multiplies the given matrix to the current matrix.
     // (transformation is about the current world origin)
-    STDMETHOD(MultMatrix)(THIS_ CONST D3DXMATRIX* pM ) PURE;
+    STDMETHOD(MultMatrix)(THIS_ CONST MATRIX* pM ) PURE;
 
     // Left-Multiplies the given matrix to the current matrix
     // (transformation is about the local origin of the object)
-    STDMETHOD(MultMatrixLocal)(THIS_ CONST D3DXMATRIX* pM ) PURE;
+    STDMETHOD(MultMatrixLocal)(THIS_ CONST MATRIX* pM ) PURE;
 
     // Right multiply the current matrix with the computed rotation
     // matrix, counterclockwise about the given axis with the given angle.
@@ -1418,7 +1418,7 @@ DECLARE_INTERFACE_(ID3DXMatrixStack, IUnknown)
     STDMETHOD(TranslateLocal)(THIS_ FLOAT x, FLOAT y, FLOAT z) PURE;
 
     // Obtain the current matrix at the top of the stack
-    STDMETHOD_(D3DXMATRIX*, GetTop)(THIS) PURE;
+    STDMETHOD_(MATRIX*, GetTop)(THIS) PURE;
 };
 
 #ifdef __cplusplus
@@ -1489,7 +1489,7 @@ FLOAT* WINAPI D3DXSHEvalDirection
 //============================================================================
 
 FLOAT* WINAPI D3DXSHRotate
-    ( __out_ecount(Order*Order) FLOAT *pOut, UINT Order, CONST D3DXMATRIX *pMatrix, CONST FLOAT *pIn );
+    ( __out_ecount(Order*Order) FLOAT *pOut, UINT Order, CONST MATRIX *pMatrix, CONST FLOAT *pIn );
     
 //============================================================================
 //

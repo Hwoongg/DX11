@@ -255,7 +255,7 @@ DECLARE_INTERFACE_(ID3DX10SkinInfo, IUnknown)
     STDMETHOD(GetBoneInfluence)(THIS_ UINT  BoneIndex, UINT  InfluenceIndex, float *pWeight) PURE;
 
     STDMETHOD(Compact)(THIS_ UINT  MaxPerVertexInfluences, UINT  ScaleMode, float MinWeight) PURE;
-    STDMETHOD(DoSoftwareSkinning)(UINT  StartVertex, UINT  VertexCount, void *pSrcVertices, UINT  SrcStride, void *pDestVertices, UINT  DestStride, D3DXMATRIX *pBoneMatrices, D3DXMATRIX *pInverseTransposeBoneMatrices, D3DX10_SKINNING_CHANNEL *pChannelDescs, UINT  NumChannels) PURE;
+    STDMETHOD(DoSoftwareSkinning)(UINT  StartVertex, UINT  VertexCount, void *pSrcVertices, UINT  SrcStride, void *pDestVertices, UINT  DestStride, MATRIX *pBoneMatrices, MATRIX *pInverseTransposeBoneMatrices, D3DX10_SKINNING_CHANNEL *pChannelDescs, UINT  NumChannels) PURE;
 };
 
 #ifdef __cplusplus

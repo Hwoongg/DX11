@@ -754,24 +754,24 @@ D3DXVECTOR4_16F::operator != ( CONST D3DXVECTOR4_16F &v ) const
 // Matrix
 //--------------------------
 D3DX10INLINE
-D3DXMATRIX::D3DXMATRIX( CONST FLOAT* pf )
+MATRIX::MATRIX( CONST FLOAT* pf )
 {
 #ifdef D3DX10_DEBUG
     if(!pf)
         return;
 #endif
 
-    memcpy(&_11, pf, sizeof(D3DXMATRIX));
+    memcpy(&_11, pf, sizeof(MATRIX));
 }
 
 D3DX10INLINE
-D3DXMATRIX::D3DXMATRIX( CONST D3DMATRIX& mat )
+MATRIX::MATRIX( CONST D3DMATRIX& mat )
 {
-    memcpy(&_11, &mat, sizeof(D3DXMATRIX));
+    memcpy(&_11, &mat, sizeof(MATRIX));
 }
 
 D3DX10INLINE
-D3DXMATRIX::D3DXMATRIX( CONST D3DXFLOAT16* pf )
+MATRIX::MATRIX( CONST D3DXFLOAT16* pf )
 {
 #ifdef D3DX10_DEBUG
     if(!pf)
@@ -782,7 +782,7 @@ D3DXMATRIX::D3DXMATRIX( CONST D3DXFLOAT16* pf )
 }
 
 D3DX10INLINE
-D3DXMATRIX::D3DXMATRIX( FLOAT f11, FLOAT f12, FLOAT f13, FLOAT f14,
+MATRIX::MATRIX( FLOAT f11, FLOAT f12, FLOAT f13, FLOAT f14,
                         FLOAT f21, FLOAT f22, FLOAT f23, FLOAT f24,
                         FLOAT f31, FLOAT f32, FLOAT f33, FLOAT f34,
                         FLOAT f41, FLOAT f42, FLOAT f43, FLOAT f44 )
@@ -797,13 +797,13 @@ D3DXMATRIX::D3DXMATRIX( FLOAT f11, FLOAT f12, FLOAT f13, FLOAT f14,
 
 // access grants
 D3DX10INLINE FLOAT&
-D3DXMATRIX::operator () ( UINT iRow, UINT iCol )
+MATRIX::operator () ( UINT iRow, UINT iCol )
 {
     return m[iRow][iCol];
 }
 
 D3DX10INLINE FLOAT
-D3DXMATRIX::operator () ( UINT iRow, UINT iCol ) const
+MATRIX::operator () ( UINT iRow, UINT iCol ) const
 {
     return m[iRow][iCol];
 }
@@ -811,28 +811,28 @@ D3DXMATRIX::operator () ( UINT iRow, UINT iCol ) const
 
 // casting operators
 D3DX10INLINE
-D3DXMATRIX::operator FLOAT* ()
+MATRIX::operator FLOAT* ()
 {
     return (FLOAT *) &_11;
 }
 
 D3DX10INLINE
-D3DXMATRIX::operator CONST FLOAT* () const
+MATRIX::operator CONST FLOAT* () const
 {
     return (CONST FLOAT *) &_11;
 }
 
 
 // assignment operators
-D3DX10INLINE D3DXMATRIX&
-D3DXMATRIX::operator *= ( CONST D3DXMATRIX& mat )
+D3DX10INLINE MATRIX&
+MATRIX::operator *= ( CONST MATRIX& mat )
 {
     D3DXMatrixMultiply(this, this, &mat);
     return *this;
 }
 
-D3DX10INLINE D3DXMATRIX&
-D3DXMATRIX::operator += ( CONST D3DXMATRIX& mat )
+D3DX10INLINE MATRIX&
+MATRIX::operator += ( CONST MATRIX& mat )
 {
     _11 += mat._11; _12 += mat._12; _13 += mat._13; _14 += mat._14;
     _21 += mat._21; _22 += mat._22; _23 += mat._23; _24 += mat._24;
@@ -841,8 +841,8 @@ D3DXMATRIX::operator += ( CONST D3DXMATRIX& mat )
     return *this;
 }
 
-D3DX10INLINE D3DXMATRIX&
-D3DXMATRIX::operator -= ( CONST D3DXMATRIX& mat )
+D3DX10INLINE MATRIX&
+MATRIX::operator -= ( CONST MATRIX& mat )
 {
     _11 -= mat._11; _12 -= mat._12; _13 -= mat._13; _14 -= mat._14;
     _21 -= mat._21; _22 -= mat._22; _23 -= mat._23; _24 -= mat._24;
@@ -851,8 +851,8 @@ D3DXMATRIX::operator -= ( CONST D3DXMATRIX& mat )
     return *this;
 }
 
-D3DX10INLINE D3DXMATRIX&
-D3DXMATRIX::operator *= ( FLOAT f )
+D3DX10INLINE MATRIX&
+MATRIX::operator *= ( FLOAT f )
 {
     _11 *= f; _12 *= f; _13 *= f; _14 *= f;
     _21 *= f; _22 *= f; _23 *= f; _24 *= f;
@@ -861,8 +861,8 @@ D3DXMATRIX::operator *= ( FLOAT f )
     return *this;
 }
 
-D3DX10INLINE D3DXMATRIX&
-D3DXMATRIX::operator /= ( FLOAT f )
+D3DX10INLINE MATRIX&
+MATRIX::operator /= ( FLOAT f )
 {
     FLOAT fInv = 1.0f / f;
     _11 *= fInv; _12 *= fInv; _13 *= fInv; _14 *= fInv;
@@ -874,16 +874,16 @@ D3DXMATRIX::operator /= ( FLOAT f )
 
 
 // unary operators
-D3DX10INLINE D3DXMATRIX
-D3DXMATRIX::operator + () const
+D3DX10INLINE MATRIX
+MATRIX::operator + () const
 {
     return *this;
 }
 
-D3DX10INLINE D3DXMATRIX
-D3DXMATRIX::operator - () const
+D3DX10INLINE MATRIX
+MATRIX::operator - () const
 {
-    return D3DXMATRIX(-_11, -_12, -_13, -_14,
+    return MATRIX(-_11, -_12, -_13, -_14,
                       -_21, -_22, -_23, -_24,
                       -_31, -_32, -_33, -_34,
                       -_41, -_42, -_43, -_44);
@@ -891,56 +891,56 @@ D3DXMATRIX::operator - () const
 
 
 // binary operators
-D3DX10INLINE D3DXMATRIX
-D3DXMATRIX::operator * ( CONST D3DXMATRIX& mat ) const
+D3DX10INLINE MATRIX
+MATRIX::operator * ( CONST MATRIX& mat ) const
 {
-    D3DXMATRIX matT;
+    MATRIX matT;
     D3DXMatrixMultiply(&matT, this, &mat);
     return matT;
 }
 
-D3DX10INLINE D3DXMATRIX
-D3DXMATRIX::operator + ( CONST D3DXMATRIX& mat ) const
+D3DX10INLINE MATRIX
+MATRIX::operator + ( CONST MATRIX& mat ) const
 {
-    return D3DXMATRIX(_11 + mat._11, _12 + mat._12, _13 + mat._13, _14 + mat._14,
+    return MATRIX(_11 + mat._11, _12 + mat._12, _13 + mat._13, _14 + mat._14,
                       _21 + mat._21, _22 + mat._22, _23 + mat._23, _24 + mat._24,
                       _31 + mat._31, _32 + mat._32, _33 + mat._33, _34 + mat._34,
                       _41 + mat._41, _42 + mat._42, _43 + mat._43, _44 + mat._44);
 }
 
-D3DX10INLINE D3DXMATRIX
-D3DXMATRIX::operator - ( CONST D3DXMATRIX& mat ) const
+D3DX10INLINE MATRIX
+MATRIX::operator - ( CONST MATRIX& mat ) const
 {
-    return D3DXMATRIX(_11 - mat._11, _12 - mat._12, _13 - mat._13, _14 - mat._14,
+    return MATRIX(_11 - mat._11, _12 - mat._12, _13 - mat._13, _14 - mat._14,
                       _21 - mat._21, _22 - mat._22, _23 - mat._23, _24 - mat._24,
                       _31 - mat._31, _32 - mat._32, _33 - mat._33, _34 - mat._34,
                       _41 - mat._41, _42 - mat._42, _43 - mat._43, _44 - mat._44);
 }
 
-D3DX10INLINE D3DXMATRIX
-D3DXMATRIX::operator * ( FLOAT f ) const
+D3DX10INLINE MATRIX
+MATRIX::operator * ( FLOAT f ) const
 {
-    return D3DXMATRIX(_11 * f, _12 * f, _13 * f, _14 * f,
+    return MATRIX(_11 * f, _12 * f, _13 * f, _14 * f,
                       _21 * f, _22 * f, _23 * f, _24 * f,
                       _31 * f, _32 * f, _33 * f, _34 * f,
                       _41 * f, _42 * f, _43 * f, _44 * f);
 }
 
-D3DX10INLINE D3DXMATRIX
-D3DXMATRIX::operator / ( FLOAT f ) const
+D3DX10INLINE MATRIX
+MATRIX::operator / ( FLOAT f ) const
 {
     FLOAT fInv = 1.0f / f;
-    return D3DXMATRIX(_11 * fInv, _12 * fInv, _13 * fInv, _14 * fInv,
+    return MATRIX(_11 * fInv, _12 * fInv, _13 * fInv, _14 * fInv,
                       _21 * fInv, _22 * fInv, _23 * fInv, _24 * fInv,
                       _31 * fInv, _32 * fInv, _33 * fInv, _34 * fInv,
                       _41 * fInv, _42 * fInv, _43 * fInv, _44 * fInv);
 }
 
 
-D3DX10INLINE D3DXMATRIX
-operator * ( FLOAT f, CONST D3DXMATRIX& mat )
+D3DX10INLINE MATRIX
+operator * ( FLOAT f, CONST MATRIX& mat )
 {
-    return D3DXMATRIX(f * mat._11, f * mat._12, f * mat._13, f * mat._14,
+    return MATRIX(f * mat._11, f * mat._12, f * mat._13, f * mat._14,
                       f * mat._21, f * mat._22, f * mat._23, f * mat._24,
                       f * mat._31, f * mat._32, f * mat._33, f * mat._34,
                       f * mat._41, f * mat._42, f * mat._43, f * mat._44);
@@ -948,15 +948,15 @@ operator * ( FLOAT f, CONST D3DXMATRIX& mat )
 
 
 D3DX10INLINE BOOL
-D3DXMATRIX::operator == ( CONST D3DXMATRIX& mat ) const
+MATRIX::operator == ( CONST MATRIX& mat ) const
 {
-    return 0 == memcmp(this, &mat, sizeof(D3DXMATRIX));
+    return 0 == memcmp(this, &mat, sizeof(MATRIX));
 }
 
 D3DX10INLINE BOOL
-D3DXMATRIX::operator != ( CONST D3DXMATRIX& mat ) const
+MATRIX::operator != ( CONST MATRIX& mat ) const
 {
-    return 0 != memcmp(this, &mat, sizeof(D3DXMATRIX));
+    return 0 != memcmp(this, &mat, sizeof(MATRIX));
 }
 
 
@@ -967,19 +967,19 @@ D3DXMATRIX::operator != ( CONST D3DXMATRIX& mat ) const
 
 D3DX10INLINE
 _D3DXMATRIXA16::_D3DXMATRIXA16( CONST FLOAT* f ) : 
-    D3DXMATRIX( f ) 
+    MATRIX( f ) 
 {
 }
 
 D3DX10INLINE
 _D3DXMATRIXA16::_D3DXMATRIXA16( CONST D3DMATRIX& m ) : 
-    D3DXMATRIX( m ) 
+    MATRIX( m ) 
 {
 }
 
 D3DX10INLINE
 _D3DXMATRIXA16::_D3DXMATRIXA16( CONST D3DXFLOAT16* f ) : 
-    D3DXMATRIX( f ) 
+    MATRIX( f ) 
 {
 }
 
@@ -988,7 +988,7 @@ _D3DXMATRIXA16::_D3DXMATRIXA16( FLOAT _11, FLOAT _12, FLOAT _13, FLOAT _14,
                                 FLOAT _21, FLOAT _22, FLOAT _23, FLOAT _24,
                                 FLOAT _31, FLOAT _32, FLOAT _33, FLOAT _34,
                                 FLOAT _41, FLOAT _42, FLOAT _43, FLOAT _44 ) :
-    D3DXMATRIX(_11, _12, _13, _14,
+    MATRIX(_11, _12, _13, _14,
                _21, _22, _23, _24,
                _31, _32, _33, _34,
                _41, _42, _43, _44) 
@@ -1052,9 +1052,9 @@ _D3DXMATRIXA16::operator delete[](void* p)
 }
 
 D3DX10INLINE _D3DXMATRIXA16& 
-_D3DXMATRIXA16::operator=(CONST D3DXMATRIX& rhs)
+_D3DXMATRIXA16::operator=(CONST MATRIX& rhs)
 {
-    memcpy(&_11, &rhs, sizeof(D3DXMATRIX));
+    memcpy(&_11, &rhs, sizeof(MATRIX));
     return *this;
 }
 
@@ -1960,8 +1960,8 @@ D3DX10INLINE D3DXVECTOR4* D3DXVec4Lerp
 // 4D Matrix
 //--------------------------
 
-D3DX10INLINE D3DXMATRIX* D3DXMatrixIdentity
-    ( D3DXMATRIX *pOut )
+D3DX10INLINE MATRIX* D3DXMatrixIdentity
+    ( MATRIX *pOut )
 {
 #ifdef D3DX10_DEBUG
     if(!pOut)
@@ -1979,7 +1979,7 @@ D3DX10INLINE D3DXMATRIX* D3DXMatrixIdentity
 
 
 D3DX10INLINE BOOL D3DXMatrixIsIdentity
-    ( CONST D3DXMATRIX *pM )
+    ( CONST MATRIX *pM )
 {
 #ifdef D3DX10_DEBUG
     if(!pM)

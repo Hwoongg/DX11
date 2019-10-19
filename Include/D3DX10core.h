@@ -105,7 +105,7 @@ typedef enum _D3DX10_SPRITE_FLAG
 
 typedef struct _D3DX10_SPRITE
 {
-    D3DXMATRIX  matWorld;
+    MATRIX  matWorld;
 
     D3DXVECTOR2 TexCoord;
     D3DXVECTOR2 TexSize;
@@ -164,10 +164,10 @@ DECLARE_INTERFACE_(ID3DX10Sprite, IUnknown)
     STDMETHOD(DrawSpritesImmediate)(THIS_ D3DX10_SPRITE *pSprites, UINT cSprites, UINT cbSprite, UINT flags) PURE;
     STDMETHOD(End)(THIS) PURE;
 
-    STDMETHOD(GetViewTransform)(THIS_ D3DXMATRIX *pViewTransform) PURE;
-    STDMETHOD(SetViewTransform)(THIS_ D3DXMATRIX *pViewTransform) PURE;
-    STDMETHOD(GetProjectionTransform)(THIS_ D3DXMATRIX *pProjectionTransform) PURE;
-    STDMETHOD(SetProjectionTransform)(THIS_ D3DXMATRIX *pProjectionTransform) PURE;
+    STDMETHOD(GetViewTransform)(THIS_ MATRIX *pViewTransform) PURE;
+    STDMETHOD(SetViewTransform)(THIS_ MATRIX *pViewTransform) PURE;
+    STDMETHOD(GetProjectionTransform)(THIS_ MATRIX *pProjectionTransform) PURE;
+    STDMETHOD(SetProjectionTransform)(THIS_ MATRIX *pProjectionTransform) PURE;
 
     STDMETHOD(GetDevice)(THIS_ ID3D10Device** ppDevice) PURE;
 };

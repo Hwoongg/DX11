@@ -49,7 +49,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	float fieldOfView, screenAspect;
 
 
-	// Store the vsync setting.
+	// Store the vsync setting. 수직동기화
 	m_vsync_enabled = vsync;
 
 	// Create a DirectX graphics interface factory.
@@ -59,71 +59,83 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 		return false;
 	}
 
-	// Use the factory to create an adapter for the primary graphics interface (video card).
+
+	// ///////////////////////////////////////////////////////////
+	// 그래픽 카드와 모니터의 주사율(새로고침 비율)이 필요함.
+	// 기본값으로 대충 맞춰놓으면 버퍼플립을 사용하지 않고 blit를 사용하게됨.
+	// 이는 성능 저하, 디버그에 에러 출력.
+	// ///////////////////////////////////////////////////////////
+
+	// 팩토리 객체로 첫번째에 있는 그래픽 카드에 대한 아답터 생성
 	result = factory->EnumAdapters(0, &adapter);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	// Enumerate the primary adapter output (monitor).
+	// 출력(모니터)에 대한 첫번째 아답터.
 	result = adapter->EnumOutputs(0, &adapterOutput);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	// Get the number of modes that fit the DXGI_FORMAT_R8G8B8A8_UNORM display format for the adapter output (monitor).
+	// 첫번째 매개변수의 포맷에 맞는 모드의 개수 구하기.
 	result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, NULL);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	// Create a list to hold all the possible display modes for this monitor/video card combination.
+	// 가능한 모든 모니터와 그래픽카드 조합을 저장할 리스트 생성.
 	displayModeList = new DXGI_MODE_DESC[numModes];
 	if (!displayModeList)
 	{
 		return false;
 	}
 
-	// Now fill the display mode list structures.
+	// 디스플레이 모드에 대한 리스트 구조를 채워넣는다.
 	result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, displayModeList);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	// Now go through all the display modes and find the one that matches the screen width and height.
-	// When a match is found store the numerator and denominator of the refresh rate for that monitor.
+	// 모든 디스플레이 모드에 대해 화면 너비/높이에 맞는 디스플레이 모드 찾기.
+	// 적절한 것을 찾으면 모니터 새로고침 비율의 분자, 분모값 저장
 	for (i = 0; i < numModes; i++)
 	{
 		if (displayModeList[i].Width == (unsigned int)screenWidth)
 		{
 			if (displayModeList[i].Height == (unsigned int)screenHeight)
 			{
-				numerator = displayModeList[i].RefreshRate.Numerator;
-				denominator = displayModeList[i].RefreshRate.Denominator;
+				numerator = displayModeList[i].RefreshRate.Numerator; // 분자
+				denominator = displayModeList[i].RefreshRate.Denominator; // 분모
 			}
 		}
 	}
 
-	// Get the adapter (video card) description.
+	// 그래픽카드 정보 획득.
 	result = adapter->GetDesc(&adapterDesc);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	// Store the dedicated video card memory in megabytes.
+	// 그래픽 카드 메모리 용량 측정.
 	m_videoCardMemory = (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
 
-	// Convert the name of the video card to a character array and store it.
+	// 그래픽 카드의 이름을 문자열로 저장.
 	error = wcstombs_s(&stringLength, m_videoCardDescription, 128, adapterDesc.Description, 128);
 	if (error != 0)
 	{
 		return false;
 	}
+
+
+	// ////////////////////////////////////
+	// 위에서 썼던 초기화용 변수들 할당 해제
+	// ////////////////////////////////////
 
 	// Release the display mode list.
 	delete[] displayModeList;
@@ -141,22 +153,32 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	factory->Release();
 	factory = 0;
 
+	
+
+
+	// /////////////////////////////////////////////////////
+	//
+	// 스왑체인 & 버퍼 구성. 백버퍼, 깊이, 스텐실버퍼.
+	//
+	// /////////////////////////////////////////////////////
+
 	// Initialize the swap chain description.
 	ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
 
-	// Set to a single back buffer.
+	// 백버퍼 개수
 	swapChainDesc.BufferCount = 1;
 
-	// Set the width and height of the back buffer.
+	// 백버퍼 크기
 	swapChainDesc.BufferDesc.Width = screenWidth;
 	swapChainDesc.BufferDesc.Height = screenHeight;
 
-	// Set regular 32-bit surface for the back buffer.
+	// 버퍼 픽셀 포멧 설정
 	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
-	// Set the refresh rate of the back buffer.
-	if (m_vsync_enabled)
+	// 백버퍼 새로고침 비율
+	if (m_vsync_enabled) // 수직동기화 활성 여부에 맞춰 설정.
 	{
+		// 위에서 계산했던 새로고침 비율값
 		swapChainDesc.BufferDesc.RefreshRate.Numerator = numerator;
 		swapChainDesc.BufferDesc.RefreshRate.Denominator = denominator;
 	}
@@ -461,21 +483,21 @@ ID3D11DeviceContext* D3DClass::GetDeviceContext()
 }
 
 
-void D3DClass::GetProjectionMatrix(D3DXMATRIX& projectionMatrix)
+void D3DClass::GetProjectionMatrix(MATRIX& projectionMatrix)
 {
 	projectionMatrix = m_projectionMatrix;
 	return;
 }
 
 
-void D3DClass::GetWorldMatrix(D3DXMATRIX& worldMatrix)
+void D3DClass::GetWorldMatrix(MATRIX& worldMatrix)
 {
 	worldMatrix = m_worldMatrix;
 	return;
 }
 
 
-void D3DClass::GetOrthoMatrix(D3DXMATRIX& orthoMatrix)
+void D3DClass::GetOrthoMatrix(MATRIX& orthoMatrix)
 {
 	orthoMatrix = m_orthoMatrix;
 	return;
