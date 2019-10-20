@@ -19,17 +19,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\cameraclass.cpp" />
+    <ClCompile Include="Src\colorshaderclass.cpp" />
     <ClCompile Include="Src\d3dclass.cpp" />
     <ClCompile Include="Src\graphicsclass.cpp" />
     <ClCompile Include="Src\inputclass.cpp" />
     <ClCompile Include="Src\main.cpp" />
+    <ClCompile Include="Src\modelclass.cpp" />
     <ClCompile Include="Src\systemclass.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\cameraclass.h" />
+    <ClInclude Include="Src\colorshaderclass.h" />
     <ClInclude Include="Src\d3dclass.h" />
     <ClInclude Include="Src\graphicsclass.h" />
     <ClInclude Include="Src\inputclass.h" />
+    <ClInclude Include="Src\modelclass.h" />
     <ClInclude Include="Src\systemclass.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\color.ps" />
+    <None Include="Shaders\color.vs" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
