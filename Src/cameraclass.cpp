@@ -63,27 +63,27 @@ void CameraClass::Render()
 	D3DXMATRIX rotationMatrix;
 
 
-	// Setup the vector that points upwards.
+	// 카메라 상방벡터
 	up.x = 0.0f;
 	up.y = 1.0f;
 	up.z = 0.0f;
 
-	// Setup the position of the camera in the world.
+	// 카메라의 월드상 위치
 	position.x = m_positionX;
 	position.y = m_positionY;
 	position.z = m_positionZ;
 
-	// Setup where the camera is looking by default.
+	// 카메라가 보고있는 방향벡터
 	lookAt.x = 0.0f;
 	lookAt.y = 0.0f;
 	lookAt.z = 1.0f;
 
-	// Set the yaw (Y axis), pitch (X axis), and roll (Z axis) rotations in radians.
+	// 카메라 회전값의 라디안화.
 	pitch = m_rotationX * 0.0174532925f;
 	yaw = m_rotationY * 0.0174532925f;
 	roll = m_rotationZ * 0.0174532925f;
 
-	// Create the rotation matrix from the yaw, pitch, and roll values.
+	// 카메라 회전행렬 생성.
 	D3DXMatrixRotationYawPitchRoll(&rotationMatrix, yaw, pitch, roll);
 
 	// Transform the lookAt and up vector by the rotation matrix so the view is correctly rotated at the origin.

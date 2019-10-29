@@ -27,6 +27,8 @@
     <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\modelclass.cpp" />
     <ClCompile Include="Src\systemclass.cpp" />
+    <ClCompile Include="Src\textureclass.cpp" />
+    <ClCompile Include="Src\textureshaderclass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\cameraclass.h" />
@@ -36,9 +38,13 @@
     <ClInclude Include="Src\inputclass.h" />
     <ClInclude Include="Src\modelclass.h" />
     <ClInclude Include="Src\systemclass.h" />
+    <ClInclude Include="Src\textureclass.h" />
+    <ClInclude Include="Src\textureshaderclass.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\color.ps" />
+    <None Include="Shaders\color.ps">
+      <FileType>Document</FileType>
+    </None>
     <None Include="Shaders\color.vs" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

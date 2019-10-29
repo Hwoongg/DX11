@@ -431,7 +431,7 @@ void D3DClass::Shutdown()
 	return;
 }
 
-
+// ∑ª¥ı≈∏∞Ÿ √ ±‚»≠
 void D3DClass::BeginScene(float red, float green, float blue, float alpha)
 {
 	float color[4];

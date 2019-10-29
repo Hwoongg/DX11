@@ -7,6 +7,11 @@
 #include <D3DX10math.h>
 #include <D3DX11async.h>
 #include <fstream>
+
+// 셰이더 컴파일 옵션을 추가하기위해 넣었음
+#include <D3Dcompiler.h> 
+#pragma comment(lib, "d3dcompiler")
+
 using namespace std;
 
 class ColorShaderClass
@@ -17,6 +22,7 @@ private:
 		D3DXMATRIX world;
 		D3DXMATRIX view;
 		D3DXMATRIX projection;
+		D3DXMATRIX wvp;
 	};
 public:
 	ColorShaderClass();

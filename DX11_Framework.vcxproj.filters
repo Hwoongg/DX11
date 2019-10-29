@@ -39,6 +39,12 @@
     <ClCompile Include="Src\modelclass.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Src\textureclass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\textureshaderclass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\d3dclass.h">
@@ -62,12 +68,18 @@
     <ClInclude Include="Src\modelclass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Src\textureclass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\textureshaderclass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\color.ps">
+    <None Include="Shaders\color.vs">
       <Filter>리소스 파일</Filter>
     </None>
-    <None Include="Shaders\color.vs">
+    <None Include="Shaders\color.ps">
       <Filter>리소스 파일</Filter>
     </None>
   </ItemGroup>

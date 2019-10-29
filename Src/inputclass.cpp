@@ -23,7 +23,6 @@ void InputClass::Initialize()
 {
 	int i;
 
-
 	// Initialize all the keys to being released and not pressed.
 	for (i = 0; i < 256; i++)
 	{

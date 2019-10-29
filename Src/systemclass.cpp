@@ -29,32 +29,26 @@ bool SystemClass::Initialize()
 	int screenWidth, screenHeight;
 	bool result;
 
-
-	// Initialize the width and height of the screen to zero before sending the variables into the function.
 	screenWidth = 0;
 	screenHeight = 0;
 
-	// Initialize the windows api.
+	// 윈도우 API 창 생성.
 	InitializeWindows(screenWidth, screenHeight);
 
-	// Create the input object.  This object will be used to handle reading the keyboard input from the user.
+	// Input 클래스 생성&초기화
 	m_Input = new InputClass;
 	if (!m_Input)
 	{
 		return false;
 	}
-
-	// Initialize the input object.
 	m_Input->Initialize();
 
-	// Create the graphics object.  This object will handle rendering all the graphics for this application.
+	// 그래픽 클래스 생성&초기화
 	m_Graphics = new GraphicsClass;
 	if (!m_Graphics)
 	{
 		return false;
 	}
-
-	// Initialize the graphics object.
 	result = m_Graphics->Initialize(screenWidth, screenHeight, m_hwnd);
 	if (!result)
 	{
@@ -88,7 +82,7 @@ void SystemClass::Shutdown()
 	return;
 }
 
-
+// 메시지 펌프(=프레임 갱신)
 void SystemClass::Run()
 {
 	MSG msg;
@@ -130,18 +124,19 @@ void SystemClass::Run()
 }
 
 
+// 한 프레임마다 이뤄지는 작업들
 bool SystemClass::Frame()
 {
 	bool result;
 
 
-	// Check if the user pressed escape and wants to exit the application.
+	// ESC 눌리면
 	if (m_Input->IsKeyDown(VK_ESCAPE))
 	{
-		return false;
+		return false; // WM_QUIT를 보내도록 할 수도 있을 듯.
 	}
 
-	// Do the frame processing for the graphics object.
+	// 한 프레임 렌더링
 	result = m_Graphics->Frame();
 	if (!result)
 	{
@@ -211,14 +206,14 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	wc.lpszClassName = m_applicationName;
 	wc.cbSize = sizeof(WNDCLASSEX);
 
-	// Register the window class.
+	// 윈도우 클래스 등록
 	RegisterClassEx(&wc);
 
-	// Determine the resolution of the clients desktop screen.
+	// 모니터 화면의 크기 획득.
 	screenWidth = GetSystemMetrics(SM_CXSCREEN);
 	screenHeight = GetSystemMetrics(SM_CYSCREEN);
 
-	// Setup the screen settings depending on whether it is running in full screen or in windowed mode.
+	// 풀스크린인지 여부에 따른 창 설정.
 	if (FULL_SCREEN)
 	{
 		// If full screen set the screen to maximum size of the users desktop and 32bit.
@@ -261,19 +256,19 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	posY = GetProfileInt(L"ScreenInfo", L"PosY", posY);*/
 
 
-	// Create the window with the screen settings and get the handle to it.
+	// 창 생성.
 	m_hwnd = CreateWindowEx(WS_EX_APPWINDOW, m_applicationName, m_applicationName,
 		WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP | WS_CAPTION | WS_SYSMENU
 		| WS_MINIMIZEBOX,
 		posX, posY, screenWidth, screenHeight, NULL, NULL, m_hinstance, NULL);
 
 
-	// Bring the window up on the screen and set it as main focus.
+	// 창 보이기.
 	ShowWindow(m_hwnd, SW_SHOW);
 	SetForegroundWindow(m_hwnd);
 	SetFocus(m_hwnd);
 
-	// Hide the mouse cursor.
+	// 마우스 커서 보이게 할지 여부.
 	ShowCursor(true);
 
 	return;
