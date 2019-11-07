@@ -13,6 +13,9 @@ GraphicsClass::GraphicsClass()
 	m_ColorShader = 0;
 
 	m_TexShader = 0;
+
+	m_LightShader = 0;
+	m_Light = 0;
 }
 
 
@@ -86,12 +89,42 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 			L"Error", MB_OK);
 	}
 
+	m_LightShader = new LightShaderClass;
+	if (!m_LightShader)
+		return false;
+
+	result = m_LightShader->Initialize(m_D3D->GetDevice(), hwnd);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the light shader object.",
+			L"Error", MB_OK);
+	}
+
+	m_Light = new LightClass;
+	if (!m_Light)
+		return false;
+	m_Light->SetDiffuseColor(1.0f, 0.0f, 1.0f, 1.0f); // 빛의 색상 설정.
+	m_Light->SetDirection(0.0f, 0.0f, 1.0f); // 빛의 방향 설정.
+
 	return true;
 }
 
 
 void GraphicsClass::Shutdown()
 {
+	if (m_Light)
+	{
+		delete m_Light;
+		m_Light = 0;
+	}
+
+	if (m_LightShader)
+	{
+		m_LightShader->Shutdown();
+		delete m_LightShader;
+		m_LightShader = 0;
+	}
+
 	if (m_ColorShader)
 	{
 		m_ColorShader->Shutdown();
@@ -129,6 +162,12 @@ bool GraphicsClass::Frame()
 {
 	bool result;
 
+	result = m_Model->Update();
+	if (!result)
+	{
+		return false;
+	}
+
 	result = Render();
 	if (!result)
 	{
@@ -151,7 +190,8 @@ bool GraphicsClass::Render()
 
 	// 셰이더에 세팅할 행렬 정보 수집.
 	m_Camera->GetViewMatrix(mVM);
-	m_D3D->GetWorldMatrix(mWM);
+	//m_D3D->GetWorldMatrix(mWM);
+	m_Model->GetWorldMatrix(mWM);
 	m_D3D->GetProjectionMatrix(mPM);
 	
 	// 모델 정보 세팅
@@ -162,8 +202,14 @@ bool GraphicsClass::Render()
 		, mWM, mVM, mPM);
 	if (!result)
 		return false;*/
-	result = m_TexShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(),
+
+	/*result = m_TexShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(),
 		mWM, mVM, mPM, m_Model->GetTexture());
+	if (!result)
+		return false;*/
+
+	result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(),
+		mWM, mVM, mPM, m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
 	if (!result)
 		return false;
 

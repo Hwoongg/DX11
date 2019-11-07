@@ -61,7 +61,7 @@ bool TextureShaderClass::Render(ID3D11DeviceContext* deviceContext, int indexCou
 		return false;
 	}
 
-	// Now render the prepared buffers with the shader.
+	// 셰이더 자원 Set
 	RenderShader(deviceContext, indexCount);
 
 	return true;
@@ -74,7 +74,7 @@ bool TextureShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, const
 	ID3D10Blob* errorMessage;
 	ID3D10Blob* vertexShaderBuffer;
 	ID3D10Blob* pixelShaderBuffer;
-	D3D11_INPUT_ELEMENT_DESC polygonLayout[2];
+	D3D11_INPUT_ELEMENT_DESC polygonLayout[3];
 	unsigned int numElements;
 	D3D11_BUFFER_DESC matrixBufferDesc;
 	D3D11_SAMPLER_DESC samplerDesc;
@@ -146,14 +146,26 @@ bool TextureShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, const
 	polygonLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 	polygonLayout[0].InstanceDataStepRate = 0;
 
-	// 두번째 시멘틱은 텍스쳐 좌표.
-	polygonLayout[1].SemanticName = "TEXCOORD";
+	// 두번째는 정점색상
+	polygonLayout[1].SemanticName = "COLOR";
 	polygonLayout[1].SemanticIndex = 0;
-	polygonLayout[1].Format = DXGI_FORMAT_R32G32_FLOAT;
+	polygonLayout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	polygonLayout[1].InputSlot = 0;
-	polygonLayout[1].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+	polygonLayout[1].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT; // 이렇게 지정하면 자동?
 	polygonLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 	polygonLayout[1].InstanceDataStepRate = 0;
+
+	// 세번째 시멘틱은 텍스쳐 좌표.
+	polygonLayout[2].SemanticName = "TEXCOORD";
+	polygonLayout[2].SemanticIndex = 0;
+	polygonLayout[2].Format = DXGI_FORMAT_R32G32_FLOAT;
+	polygonLayout[2].InputSlot = 0;
+	polygonLayout[2].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+	polygonLayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	polygonLayout[2].InstanceDataStepRate = 0;
+
+
+	
 
 	// 레이아웃 개수 측정
 	numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);
@@ -307,7 +319,7 @@ bool TextureShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceContext,
 	D3DXMatrixTranspose(&viewMatrix, &viewMatrix);
 	D3DXMatrixTranspose(&projectionMatrix, &projectionMatrix);
 
-
+	// Usage_Dynamic일 경우에는 이렇게 매핑해서 써야한다.
 	result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result))
 	{
@@ -316,7 +328,7 @@ bool TextureShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceContext,
 
 	dataPtr = (MatrixBufferType*)mappedResource.pData;
 
-	// Copy the matrices into the constant buffer.
+	// 행렬 전달
 	dataPtr->world = worldMatrix;
 	dataPtr->view = viewMatrix;
 	dataPtr->projection = projectionMatrix;
@@ -327,10 +339,10 @@ bool TextureShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceContext,
 	// Set the position of the constant buffer in the vertex shader.
 	bufferNumber = 0;
 
-	// Now set the constant buffer in the vertex shader with the updated values.
+	// 상수버퍼 세트
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
 
-	// Set shader texture resource in the pixel shader.
+	// 픽셀 셰이더에 리소스 세트.
 	deviceContext->PSSetShaderResources(0, 1, &texture);
 
 	return true;
@@ -339,14 +351,14 @@ bool TextureShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceContext,
 
 void TextureShaderClass::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
 {
-	// Set the vertex input layout.
+	// 입력 레이아웃 설정
 	deviceContext->IASetInputLayout(m_layout);
 
-	// Set the vertex and pixel shaders that will be used to render this triangle.
+	// 셰이더 설정
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 
-	// Set the sampler state in the pixel shader.
+	// 샘플러 상태 세트
 	deviceContext->PSSetSamplers(0, 1, &m_sampleState);
 
 	// Render the triangle.

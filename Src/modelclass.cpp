@@ -29,6 +29,8 @@ bool ModelClass::Initialize(ID3D11Device* device)
 		return false;
 	}
 
+	D3DXMatrixIdentity(&m_worldMatrix);
+
 	return true;
 }
 
@@ -47,6 +49,8 @@ bool ModelClass::Initialize(ID3D11Device* device, const WCHAR* texFilename)
 	{
 		return false;
 	}
+
+	D3DXMatrixIdentity(&m_worldMatrix);
 
 	return true;
 }
@@ -105,16 +109,19 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 
 	// 정점 데이터 입력
 	vertices[0].position = D3DXVECTOR3(-1, -1, 0);
-	//vertices[0].color = D3DXVECTOR4(1, 0, 0, 1);
+	vertices[0].color = D3DXVECTOR4(1, 0, 0, 1);
 	vertices[0].texUV = D3DXVECTOR2(0.0f, 1.0f);
+	vertices[0].normal = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
 	
 	vertices[1].position = D3DXVECTOR3(0, 1, 0);
-	//vertices[1].color = D3DXVECTOR4(0, 1, 0, 1);
+	vertices[1].color = D3DXVECTOR4(0, 1, 0, 1);
 	vertices[1].texUV = D3DXVECTOR2(0.5f, 0.0f);
+	vertices[1].normal = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
 
 	vertices[2].position = D3DXVECTOR3(1, -1, 0);
-	//vertices[2].color = D3DXVECTOR4(0, 0, 1, 1);
+	vertices[2].color = D3DXVECTOR4(0, 0, 1, 1);
 	vertices[2].texUV = D3DXVECTOR2(1.0f, 1.0f);
+	vertices[2].normal = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
 	
 	// 인덱스 데이터 입력
 	indices[0] = 0;
@@ -233,6 +240,25 @@ void ModelClass::ReleaseTexture()
 		delete m_Texture;
 		m_Texture = 0;
 	}
+
+	return;
+}
+
+bool ModelClass::Update()
+{
+	// 모델 회전.
+	MATRIX mRot;
+
+	D3DXMatrixRotationY(&mRot, 0.01f); // 10도 회전 행렬 생성.
+
+	m_worldMatrix *= mRot;
+
+	return true;
+}
+
+void ModelClass::GetWorldMatrix(MATRIX& pOut)
+{
+	pOut = m_worldMatrix;
 
 	return;
 }

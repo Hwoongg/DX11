@@ -15,6 +15,8 @@
 #include "modelclass.h"
 #include "colorshaderclass.h"
 #include "textureshaderclass.h"
+#include "lightshaderclass.h"
+#include "lightclass.h"
 
 
 /////////////
@@ -49,6 +51,9 @@ private:
 	ModelClass* m_Model;
 	ColorShaderClass* m_ColorShader;
 	TextureShaderClass* m_TexShader;
+
+	LightShaderClass* m_LightShader;
+	LightClass* m_Light;
 };
 
 #endif

@@ -59,6 +59,7 @@ bool ColorShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, const W
 	const WCHAR* psFilename)
 {
 	HRESULT result;
+	// ID3D10Blob은 셰이더 컴파일 시 생성되는 오브젝트들의 통합 인터페이스
 	ID3D10Blob* errorMsg;
 	ID3D10Blob* vertexShaderBuffer;
 	ID3D10Blob* pixelShaderBuffer;
@@ -165,6 +166,16 @@ bool ColorShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, const W
 
 	// 상수 버퍼 내용 기술.
 	// 프레임 마다 사용될 버퍼기 때문에 동적사용이 가능해야 한다.
+	// -----------------------------------------------------------------------------
+	// [DX 버퍼의 종류 ]
+	// 1. 기본 버퍼 : Usage_Default, GPU 의 읽기/쓰기. 통상적인 버퍼 사용. 내용을 갱신할때는 UpdateSubResource 사용
+	// 2. 동적 버퍼 : Usage_Dynamic, CPU (쓰기) GPU (읽기), 빈번한 내용변화시, 내용을 갱신할때는 Map / UnMap 사용.
+	// 3. 기타 : Usage_Immuatble - GPU (읽기전용), CPU 접근 불가, 내용변경불가.
+	//           Usage_Staging - GPU 에서 CPU 로 복사 가능.
+	//
+	// * 상수버퍼 : 최대 14개 등록 가능. 다른 셰이더와 혼용가능.
+	//             셰이더 소스에 임의 지정 가능. register(b#) 으로 지정, 약어 b = 상수버퍼.
+	// ------------------------------------------------------------------------------
 	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC; // 동적으로 사용됨을 의미. (USAGE=사용법)
 	matrixBufferDesc.ByteWidth = sizeof(MatrixBufferType); // 해당 버퍼의 크기.
 	matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER; // 상수버퍼라고 알림.
@@ -178,9 +189,6 @@ bool ColorShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, const W
 	{
 		return false;
 	}
-
-	// 혼합 객체 생성
-	// ...
 
 	return true;
 }
@@ -264,23 +272,26 @@ bool ColorShaderClass::SetShaderParameters(ID3D11DeviceContext* dc,
 	D3DXMatrixTranspose(&mPM, &mPM);
 
 
+	// 행렬 상수버퍼 매핑
 	result = dc->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
+	// 매핑된 데이터에 자료 세트
 	dataPtr = (MatrixBufferType*)mappedResource.pData;
-
 	dataPtr->world = mWM;
 	dataPtr->view = mVM;
 	dataPtr->projection = mPM;
 	dataPtr->wvp = WVP;
 
+	// 매핑 해제
 	dc->Unmap(m_matrixBuffer, 0);
 
 	bufferNumber = 0;
 
+	// 상수버퍼 세트
 	dc->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
 
 	return true;

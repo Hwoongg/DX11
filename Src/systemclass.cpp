@@ -133,8 +133,9 @@ bool SystemClass::Frame()
 	// ESC 눌리면
 	if (m_Input->IsKeyDown(VK_ESCAPE))
 	{
-		return false; // WM_QUIT를 보내도록 할 수도 있을 듯.
+		return false; // WM_QUIT를 SendMessage() 할 수도 있을 듯.
 	}
+
 
 	// 한 프레임 렌더링
 	result = m_Graphics->Frame();

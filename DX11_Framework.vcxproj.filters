@@ -45,6 +45,12 @@
     <ClCompile Include="Src\textureshaderclass.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Src\lightshaderclass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\lightclass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\d3dclass.h">
@@ -74,12 +80,30 @@
     <ClInclude Include="Src\textureshaderclass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Src\lightshaderclass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\lightclass.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\color.vs">
       <Filter>리소스 파일</Filter>
     </None>
     <None Include="Shaders\color.ps">
+      <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="Shaders\texture.ps">
+      <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="Shaders\texture.vs">
+      <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="Shaders\light.ps">
+      <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="Shaders\light.vs">
       <Filter>리소스 파일</Filter>
     </None>
   </ItemGroup>

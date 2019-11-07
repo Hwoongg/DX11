@@ -12,10 +12,10 @@ class ModelClass
 private:
 	struct VertexType
 	{
-
-		D3DXVECTOR3 position;
-		//D3DXVECTOR4 color;
-		D3DXVECTOR2 texUV;
+		D3DXVECTOR3 position; // 정점 좌표
+		D3DXVECTOR4 color; // 정점 색상
+		D3DXVECTOR2 texUV; // 정점의 텍스쳐 좌표(uv)
+		D3DXVECTOR3 normal; // 정점의 노말(Face Normal)
 	};
 
 public:
@@ -24,13 +24,16 @@ public:
 	~ModelClass();
 
 	bool Initialize(ID3D11Device*);
-	bool Initialize(ID3D11Device*,const WCHAR*);
+	bool Initialize(ID3D11Device*,const WCHAR*); // 텍스쳐 로딩 기능이 추가된 오버로드
 	void Shutdown();
 	void Render(ID3D11DeviceContext*);
 
 	int GetIndexCount();
 
 	ID3D11ShaderResourceView* GetTexture();
+
+	bool Update();
+	void GetWorldMatrix(MATRIX& pOut);
 
 private:
 	bool InitializeBuffers(ID3D11Device*);
@@ -45,6 +48,8 @@ private:
 	int m_vertexCount, m_indexCount;
 
 	TextureClass* m_Texture;
+
+	MATRIX m_worldMatrix;
 };
 
 

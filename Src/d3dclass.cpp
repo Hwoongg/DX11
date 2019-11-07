@@ -243,14 +243,14 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 		return false;
 	}
 
-	// Release pointer to the back buffer as we no longer need it.
+	// 백버퍼 포인터 자원 회수
 	backBufferPtr->Release();
 	backBufferPtr = 0;
 
-	// Initialize the description of the depth buffer.
+	// 깊이버퍼 기술용 구조체 초기화
 	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
-	// Set up the description of the depth buffer.
+	// 깊이버퍼 정보 기술
 	depthBufferDesc.Width = screenWidth;
 	depthBufferDesc.Height = screenHeight;
 	depthBufferDesc.MipLevels = 1;
@@ -263,17 +263,17 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	depthBufferDesc.CPUAccessFlags = 0;
 	depthBufferDesc.MiscFlags = 0;
 
-	// Create the texture for the depth buffer using the filled out description.
+	// 깊이 버퍼 텍스쳐 생성
 	result = m_device->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	// Initialize the description of the stencil state.
+	// 깊이&스텐실 상태 기술 구조체 초기화
 	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
 
-	// Set up the description of the stencil state.
+	// 깊이값 처리 옵션
 	depthStencilDesc.DepthEnable = true;
 	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
@@ -282,47 +282,47 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	depthStencilDesc.StencilReadMask = 0xFF;
 	depthStencilDesc.StencilWriteMask = 0xFF;
 
-	// Stencil operations if pixel is front-facing.
+	// 픽셀의 앞면 스텐실 옵션
 	depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
 	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
 	depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 	depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
-	// Stencil operations if pixel is back-facing.
+	// 픽셀의 뒷면 스텐실 옵션
 	depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
 	depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
 	depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
-	// Create the depth stencil state.
+	// 깊이&스텐실 상태 객체 생성
 	result = m_device->CreateDepthStencilState(&depthStencilDesc, &m_depthStencilState);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	// Set the depth stencil state.
+	// 깊이&스텐실 상태 세트.
 	m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
 
-	// Initialize the depth stencil view.
+	// 깊이&스텐실 뷰 초기화
 	ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
 
-	// Set up the depth stencil view description.
+	// 깊이&스텐실 뷰 옵션 기술.
 	depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	depthStencilViewDesc.Texture2D.MipSlice = 0;
 
-	// Create the depth stencil view.
+	// 깊이&스텐실 뷰 생성
 	result = m_device->CreateDepthStencilView(m_depthStencilBuffer, &depthStencilViewDesc, &m_depthStencilView);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	// Bind the render target view and depth stencil buffer to the output render pipeline.
+	// 렌더타겟, 깊이&스텐실 뷰 세트
 	m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
 
-	// Setup the raster description which will determine how and what polygons will be drawn.
+	// 래스터 상태 옵션 설정. 다각형을 어떻게 채울지에 대한 설정.
 	rasterDesc.AntialiasedLineEnable = false;
 	rasterDesc.CullMode = D3D11_CULL_BACK;
 	rasterDesc.DepthBias = 0;
@@ -334,17 +334,17 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	rasterDesc.ScissorEnable = false;
 	rasterDesc.SlopeScaledDepthBias = 0.0f;
 
-	// Create the rasterizer state from the description we just filled out.
+	// 래스터 상태 객체 생성.
 	result = m_device->CreateRasterizerState(&rasterDesc, &m_rasterState);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	// Now set the rasterizer state.
+	// 래스터 상태 세트.
 	m_deviceContext->RSSetState(m_rasterState);
 
-	// Setup the viewport for rendering.
+	// 뷰포트 옵션 설정.
 	viewport.Width = (float)screenWidth;
 	viewport.Height = (float)screenHeight;
 	viewport.MinDepth = 0.0f;
@@ -352,20 +352,20 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	viewport.TopLeftX = 0.0f;
 	viewport.TopLeftY = 0.0f;
 
-	// Create the viewport.
+	// 뷰포트 세트.
 	m_deviceContext->RSSetViewports(1, &viewport);
 
-	// Setup the projection matrix.
+	// 투영 행렬 생성을 위한 필요값 계산.
 	fieldOfView = (float)D3DX_PI / 4.0f;
 	screenAspect = (float)screenWidth / (float)screenHeight;
 
-	// Create the projection matrix for 3D rendering.
+	// FOV값과 해상도 비율, 근평면과 원평면의 거리값을 받아 원근투영 행렬 생성.
 	D3DXMatrixPerspectiveFovLH(&m_projectionMatrix, fieldOfView, screenAspect, screenNear, screenDepth);
 
-	// Initialize the world matrix to the identity matrix.
+	// 월드행렬 초기화.
 	D3DXMatrixIdentity(&m_worldMatrix);
 
-	// Create an orthographic projection matrix for 2D rendering.
+	// 직교 투영 행렬 생성. 현재 사용하지 않음.
 	D3DXMatrixOrthoLH(&m_orthoMatrix, (float)screenWidth, (float)screenHeight, screenNear, screenDepth);
 
 	return true;

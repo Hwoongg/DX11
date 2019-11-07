@@ -24,6 +24,8 @@
     <ClCompile Include="Src\d3dclass.cpp" />
     <ClCompile Include="Src\graphicsclass.cpp" />
     <ClCompile Include="Src\inputclass.cpp" />
+    <ClCompile Include="Src\lightclass.cpp" />
+    <ClCompile Include="Src\lightshaderclass.cpp" />
     <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\modelclass.cpp" />
     <ClCompile Include="Src\systemclass.cpp" />
@@ -36,6 +38,8 @@
     <ClInclude Include="Src\d3dclass.h" />
     <ClInclude Include="Src\graphicsclass.h" />
     <ClInclude Include="Src\inputclass.h" />
+    <ClInclude Include="Src\lightclass.h" />
+    <ClInclude Include="Src\lightshaderclass.h" />
     <ClInclude Include="Src\modelclass.h" />
     <ClInclude Include="Src\systemclass.h" />
     <ClInclude Include="Src\textureclass.h" />
@@ -46,6 +50,10 @@
       <FileType>Document</FileType>
     </None>
     <None Include="Shaders\color.vs" />
+    <None Include="Shaders\light.ps" />
+    <None Include="Shaders\light.vs" />
+    <None Include="Shaders\texture.ps" />
+    <None Include="Shaders\texture.vs" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
