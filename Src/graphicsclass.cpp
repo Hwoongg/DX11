@@ -16,6 +16,8 @@ GraphicsClass::GraphicsClass()
 
 	m_LightShader = 0;
 	m_Light = 0;
+
+	m_Cube = 0;
 }
 
 
@@ -53,7 +55,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	{
 		return false;
 	}
-	m_Camera->SetPosition(0, 0, -10.0f);
+	m_Camera->SetPosition(0, 1, -5.0f);
 
 	// 삼각형 모델 초기화
 	m_Model = new ModelClass;
@@ -63,7 +65,19 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	result = m_Model->Initialize(m_D3D->GetDevice(), L"./Textures/seafloor.dds");
 	if (!result)
 	{
-		MessageBox(hwnd, L"Coult not initialize the model.", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
+		return false;
+	}
+
+	m_Cube = new CubeModelClass;
+	if (!m_Cube)
+		return false;
+	result = m_Cube->Initialize(m_D3D->GetDevice(), 
+		"./Models/dwarf.txt",
+		L"./Textures/seafloor.dds");
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the cube model object.", L"Error", MB_OK);
 		return false;
 	}
 
@@ -103,8 +117,9 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_Light = new LightClass;
 	if (!m_Light)
 		return false;
-	m_Light->SetDiffuseColor(1.0f, 0.0f, 1.0f, 1.0f); // 빛의 색상 설정.
-	m_Light->SetDirection(0.0f, 0.0f, 1.0f); // 빛의 방향 설정.
+	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f); // 빛의 색상 설정.
+
+	m_Light->SetDirection(1.0f, -1.0f, 1.0f); // 빛의 방향 설정.
 
 	return true;
 }
@@ -130,6 +145,13 @@ void GraphicsClass::Shutdown()
 		m_ColorShader->Shutdown();
 		delete m_ColorShader;
 		m_ColorShader = 0;
+	}
+
+	if (m_Cube)
+	{
+		m_Cube->Shutdown();
+		delete m_Cube;
+		m_Cube = 0;
 	}
 
 	if (m_Model)
@@ -158,11 +180,11 @@ void GraphicsClass::Shutdown()
 }
 
 
-bool GraphicsClass::Frame()
+bool GraphicsClass::Frame(float dTime)
 {
 	bool result;
 
-	result = m_Model->Update();
+	result = m_Model->Update(dTime);
 	if (!result)
 	{
 		return false;
@@ -182,10 +204,10 @@ bool GraphicsClass::Render()
 	D3DXMATRIX mWM, mVM, mPM;
 	bool result;
 
-
+	// 백버퍼 초기화.
 	m_D3D->BeginScene(0, 0, 0, 1.0f);
 
-	// 카메라 준비.
+	// 카메라 준비. 뷰행렬 생성.
 	m_Camera->Render();
 
 	// 셰이더에 세팅할 행렬 정보 수집.
@@ -194,22 +216,29 @@ bool GraphicsClass::Render()
 	m_Model->GetWorldMatrix(mWM);
 	m_D3D->GetProjectionMatrix(mPM);
 	
-	// 모델 정보 세팅
-	m_Model->Render(m_D3D->GetDeviceContext());
+
+	// 렌더링될 모델 데이터 Set
+	//m_Model->Render(m_D3D->GetDeviceContext());
+	m_Cube->Render(m_D3D->GetDeviceContext());
+
 
 	// Draw
+	// Vertex Color Shader - Triangle
 	/*result = m_ColorShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount()
-		, mWM, mVM, mPM);
-	if (!result)
-		return false;*/
+		, mWM, mVM, mPM);*/
 
+	// Non-Lighting Texture Shader - Triangle
 	/*result = m_TexShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(),
-		mWM, mVM, mPM, m_Model->GetTexture());
-	if (!result)
-		return false;*/
+		mWM, mVM, mPM, m_Model->GetTexture());*/
 
-	result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(),
-		mWM, mVM, mPM, m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
+	// Lighting Texture Shader - Triangle
+	/*result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(),
+		mWM, mVM, mPM, m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());*/
+	
+	// Lighting Tex Shader - Cube
+	result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Cube->GetIndexCount(),
+		mWM, mVM, mPM, m_Cube->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
+
 	if (!result)
 		return false;
 

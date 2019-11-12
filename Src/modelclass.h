@@ -32,7 +32,7 @@ public:
 
 	ID3D11ShaderResourceView* GetTexture();
 
-	bool Update();
+	bool Update(float dTime);
 	void GetWorldMatrix(MATRIX& pOut);
 
 private:

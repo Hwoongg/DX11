@@ -1,6 +1,7 @@
 #pragma once
 #include "inputclass.h"
 #include "graphicsclass.h"
+#include "time.h"
 
 // 빌드 속도 상승용
 #ifndef _SYSTEMCLASS_H_
@@ -31,6 +32,8 @@ private:
 
 	InputClass* m_Input; // 입력 처리 클래스
 	GraphicsClass* m_Graphics; // 그래픽 출력 클래스
+
+	Time* m_Time;
 };
 
 

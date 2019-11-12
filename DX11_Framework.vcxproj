@@ -21,7 +21,9 @@
   <ItemGroup>
     <ClCompile Include="Src\cameraclass.cpp" />
     <ClCompile Include="Src\colorshaderclass.cpp" />
+    <ClCompile Include="Src\cubemodelclass.cpp" />
     <ClCompile Include="Src\d3dclass.cpp" />
+    <ClCompile Include="Src\dxinputclass.cpp" />
     <ClCompile Include="Src\graphicsclass.cpp" />
     <ClCompile Include="Src\inputclass.cpp" />
     <ClCompile Include="Src\lightclass.cpp" />
@@ -31,11 +33,14 @@
     <ClCompile Include="Src\systemclass.cpp" />
     <ClCompile Include="Src\textureclass.cpp" />
     <ClCompile Include="Src\textureshaderclass.cpp" />
+    <ClCompile Include="Src\time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\cameraclass.h" />
     <ClInclude Include="Src\colorshaderclass.h" />
+    <ClInclude Include="Src\cubemodelclass.h" />
     <ClInclude Include="Src\d3dclass.h" />
+    <ClInclude Include="Src\dxinputclass.h" />
     <ClInclude Include="Src\graphicsclass.h" />
     <ClInclude Include="Src\inputclass.h" />
     <ClInclude Include="Src\lightclass.h" />
@@ -44,6 +49,7 @@
     <ClInclude Include="Src\systemclass.h" />
     <ClInclude Include="Src\textureclass.h" />
     <ClInclude Include="Src\textureshaderclass.h" />
+    <ClInclude Include="Src\time.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\color.ps">

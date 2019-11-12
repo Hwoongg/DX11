@@ -11,6 +11,8 @@ SystemClass::SystemClass()
 {
 	m_Input = 0;
 	m_Graphics = 0;
+
+	m_Time = 0;
 }
 
 
@@ -55,12 +57,29 @@ bool SystemClass::Initialize()
 		return false;
 	}
 
+	m_Time = new Time;
+	if (!m_Time)
+		return false;
+	result = m_Time->Initialize();
+	if (!result)
+	{
+		MessageBox(m_hwnd, L"Could not initialize the Timer object.", L"Error",
+			MB_OK);
+		return false;
+	}
+
 	return true;
 }
 
 
 void SystemClass::Shutdown()
 {
+	if (m_Time)
+	{
+		delete m_Time;
+		m_Time = 0;
+	}
+
 	// Release the graphics object.
 	if (m_Graphics)
 	{
@@ -129,6 +148,7 @@ bool SystemClass::Frame()
 {
 	bool result;
 
+	m_Time->Update();
 
 	// ESC 눌리면
 	if (m_Input->IsKeyDown(VK_ESCAPE))
@@ -138,7 +158,7 @@ bool SystemClass::Frame()
 
 
 	// 한 프레임 렌더링
-	result = m_Graphics->Frame();
+	result = m_Graphics->Frame(m_Time->GetDeltaTime());
 	if (!result)
 	{
 		return false;

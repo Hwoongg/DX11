@@ -17,7 +17,7 @@
 #include "textureshaderclass.h"
 #include "lightshaderclass.h"
 #include "lightclass.h"
-
+#include "cubemodelclass.h"
 
 /////////////
 // GLOBALS //
@@ -40,7 +40,7 @@ public:
 
 	bool Initialize(int, int, HWND);
 	void Shutdown();
-	bool Frame();
+	bool Frame(float dTime);
 
 private:
 	bool Render();
@@ -54,6 +54,9 @@ private:
 
 	LightShaderClass* m_LightShader;
 	LightClass* m_Light;
+
+	CubeModelClass* m_Cube;
+
 };
 
 #endif

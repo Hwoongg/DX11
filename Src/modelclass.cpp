@@ -244,12 +244,12 @@ void ModelClass::ReleaseTexture()
 	return;
 }
 
-bool ModelClass::Update()
+bool ModelClass::Update(float dTime)
 {
 	// 모델 회전.
 	MATRIX mRot;
 
-	D3DXMatrixRotationY(&mRot, 0.01f); // 10도 회전 행렬 생성.
+	D3DXMatrixRotationY(&mRot, 0.001f * dTime); // 10도 회전 행렬 생성.
 
 	m_worldMatrix *= mRot;
 
