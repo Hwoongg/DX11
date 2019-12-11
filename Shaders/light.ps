@@ -44,19 +44,24 @@ float4 LightPixelShader(PixelInputType input) : SV_TARGET
 	AmbientColor.w = 1;
 
 	// Sample the pixel color from the texture using the sampler at this texture coordinate location.
+	// 텍스쳐 샘플링
 	textureColor = shaderTexture.Sample(SampleType, input.tex);
 
 	// Invert the light direction for calculations.
+	// 전역광 방향벡터 뒤집고 정규화
     lightDir = -lightDirection;
 	normalize(lightDir);
 
     // Calculate the amount of light on this pixel.
+	// NdotL 광량계산 + 최대 최소값 제한
     lightIntensity = saturate(dot(input.normal, lightDir));
 
     // Determine the final amount of diffuse color based on the diffuse color combined with the light intensity.
+	// 광량 적용.
     color = saturate(diffuseColor * lightIntensity + AmbientColor);
 
     // Multiply the texture pixel and the final diffuse color to get the final pixel color result.
+	// 텍스쳐 색상 적용.
     color = color * textureColor;
 
     return color;

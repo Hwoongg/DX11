@@ -363,7 +363,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	D3DXMatrixPerspectiveFovLH(&m_projectionMatrix, fieldOfView, screenAspect, screenNear, screenDepth);
 
 	// 월드행렬 초기화.
-	D3DXMatrixIdentity(&m_worldMatrix);
+	//D3DXMatrixIdentity(&m_worldMatrix);
 
 	// 직교 투영 행렬 생성. 현재 사용하지 않음.
 	D3DXMatrixOrthoLH(&m_orthoMatrix, (float)screenWidth, (float)screenHeight, screenNear, screenDepth);

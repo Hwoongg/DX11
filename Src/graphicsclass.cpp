@@ -239,6 +239,9 @@ bool GraphicsClass::Render()
 	result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Cube->GetIndexCount(),
 		mWM, mVM, mPM, m_Cube->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
 
+	/*result = m_TexShader->Render(m_D3D->GetDeviceContext(), m_Cube->GetIndexCount(),
+		mWM, mVM, mPM, m_Model->GetTexture());*/
+
 	if (!result)
 		return false;
 
